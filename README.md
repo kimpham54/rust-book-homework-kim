@@ -81,9 +81,15 @@ Rust has a strong, static type system. It also has type inference and can guess 
 
 some number types
 - i32: 32 bit number
-- u32: unsigned 32 bit number
+- u32: unsigned 32 bit number (positive no - or + signs just +)
 - i64: 64 bit
 
+you can "shadow" variables, so if you created variable guess as string you can reuse guess. do this when you don't want to create two unique variables but want to conver a value from one type to another type
+
+parse method on strings converts strings to another type. The parse method will only work on characters that can logically be converted into numbers and so can easily cause errors.  Because it might fail, the parse method returns a Result type like read_line. has an Ok and Err variant types. so no need to use expect which crashes on an error, instead try to handle the error
+
+A match expression is made up of arms. An arm consists of a pattern to match against, and the code that should be run if the value given to match fits that arm’s pattern. Rust takes the value given to match and looks through each arm’s pattern in turn. Patterns and the match construct are powerful Rust features that let you express a variety of situations your code might encounter and make sure that you handle them all. interesting analogy. comparing arms, check each arm, one by one
+The understore _ is a catchall value in rust, Err(_) catchall in the last arm if not an Ok
 
 ## OTHER NOTES
 
