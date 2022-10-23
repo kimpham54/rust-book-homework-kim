@@ -177,6 +177,48 @@ tuple can be mixed content, array has to be same type
 
 - rust doesn't allow invalid memory access for safety reasons, unlike some other languages it will stop running
 
+#### functions
+- rust is an expression based language. it has statements and expressions. Statements are instructions that perform some action and do not return a value. Expressions evaluate to a resulting value
+
+let is a statement, function definition is a statement
+
+`let x = (let y = 6);` would cause an error
+
+The let y = 6 statement does not return a value, so there isn’t anything for x to bind to. This is different from what happens in other languages, such as C and Ruby, where the assignment returns the value of the assignment. In those languages, you can write x = y = 6 and have both x and y have the value 6; that is not the case in Rust.
+
+Calling a function is an expression. Calling a macro is an expression. A new scope block created with curly brackets is an expression
+
+Expressions do not include ending semicolons. If you add a semicolon to the end of an expression, you turn it into a statement, and it will then not return a value
+
+order of function declarations don't matter
+
+mismatched types -> functions should return values. don't use semicolon or else it'd be a statement at end of function
+
+#### control flow
+
+blocks of code associated with the conditions in if expressions are also sometimes called arms
+
+```
+fn main() {
+    let number = 3;
+
+    if number {
+        println!("number was three");
+    }
+}
+```
+The error indicates that Rust expected a bool but got an integer. Unlike languages such as Ruby and JavaScript, Rust will not automatically try to convert non-Boolean types to a Boolean.
+
+Using too many else if expressions can clutter your code, so if you have more than one, you might want to refactor your code. Chapter 6 describes a powerful Rust branching construct called match for these cases.
+
+`let number = if condition { 5 } else { "six" };` won't work cause if and else arms have to be the same value type because variables must have a single type and rust needs to know at compile time what type it will be: 'Rust wouldn’t be able to do that if the type of number was only determined at runtime; the compiler would be more complex and would make fewer guarantees about the code if it had to keep track of multiple hypothetical types for any variable.'
+
+know: 
+- if, else, else if
+- while - loop if else break
+- loop break continue, loops can be labelled
+- for - nice because consistent and concise
+
 ## OTHER NOTES
 
 ## RUST IN ACTION
@@ -200,3 +242,10 @@ Buffer overflow—An attempt to access the 12th element of an array with only 6 
 Iterator invalidation—An issue caused by something that is iterated over after being altered midway through (see listing 1.6)
 
 
+static vs dynamically typed - rust is static, so that means you must know all of the variables at compile time and what their type is definitively and can only be one type. in dynamic languages javascript you don't necessarily know what to expect at runtime, variable types can change, not as performant, also less ideal for safety and memory reasons. benefit is that it's more efficient to code, dealing less with syntax and more with logic, but less proper. you have to be explicit in declaring types. that way will know everytime that variable is used can tell if its valid or not already
+
+expression based language - statements such as in C and ruby can evaluate to a value, but in rust statements dont return a value, and expressions do and it makes that very distinct
+
+functional vs other types of programming - in functional data is immutable, focuses more on the functions, doesn't have control flow with loops and conditionals, execution and order of statements can be important.
+
+compiled vs interpreted language - interpret is like translating on the fly, compile is building the program in an assembly language that can be understood
