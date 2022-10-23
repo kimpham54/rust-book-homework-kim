@@ -9,8 +9,9 @@ goals:
 - fourth goal (whenever!): walkthrough some examples in rust in action, or see if i can contribute to open source projects by now
 
 updates:
-- oct 21: started ch 1-2
-- oct22: started ch 3
+- oct22: finished ch 1,2, started ch 3
+- oct23: finished ch 3, started ch 4
+
 
 ## THE RUST BOOK
 
@@ -98,10 +99,13 @@ you can "shadow" variables, so if you created variable guess as string you can r
 
 parse method on strings converts strings to another type. The parse method will only work on characters that can logically be converted into numbers and so can easily cause errors.  Because it might fail, the parse method returns a Result type like read_line. has an Ok and Err variant types. so no need to use expect which crashes on an error, instead try to handle the error
 
-A match expression is made up of arms. An arm consists of a pattern to match against, and the code that should be run if the value given to match fits that arm’s pattern. Rust takes the value given to match and looks through each arm’s pattern in turn. Patterns and the match construct are powerful Rust features that let you express a variety of situations your code might encounter and make sure that you handle them all. interesting analogy. comparing arms, check each arm, one by one
+A match expression is made up of arms. An arm consists of a pattern to match against, and the code that should be run if the value given to match fits that arm’s pattern. Rust takes the value given to match and looks through each arm’s pattern in turn. 
+
+Patterns and the match construct are rust features to express a variety of situations your code might encounter and make sure that you handle them all. interesting analogy, like some octopus multitasker matchmaker. comparing arms, check each arm, one by one
+
 The understore _ is a catchall value in rust, Err(_) catchall in the last arm if not an Ok
 
-### Chapter 3
+### Chapter 3 - Control Flow
 
 - keywords useful https://doc.rust-lang.org/book/appendix-01-keywords.html
 
@@ -121,8 +125,9 @@ fn main() {
     println!("The value of x is: {x}");
 }
 ```
+inner scope let statement shadows x and creates new variable value of x is 12. however when scope is over, inner shadowing ends and x returns to being 6.
 
-This program first binds x to a value of 5. Then it creates a new variable x by repeating let x =, taking the original value and adding 1 so the value of x is then 6. Then, within an inner scope created with the curly brackets, the third let statement also shadows x and creates a new variable, multiplying the previous value by 2 to give x a value of 12. When that scope is over, the inner shadowing ends and x returns to being 6. When we run this program, it will output the following:
+output:
 
 ```
 $ cargo run
@@ -143,9 +148,13 @@ $ x
 
 by using let, the variable is still immutable, we just get to do some transofmrations on it. by using let we're effectively creating a new variable
 
-so mut allows a variable's value change but it doesn't let you change the variable's type. so only value?
+- question: so mut allows a variable's value change but it doesn't let you change the variable's type. so only value?
 
 let allows you to reassign to anything. 'shadowing'
+
+shadowing is different from mutability - shadow is essentially new
+
+constant is different from immutable variables (const can be global)
 
 #### data types
 
@@ -219,9 +228,60 @@ know:
 - loop break continue, loops can be labelled
 - for - nice because consistent and concise
 
+### Chapter 4 - Ownership
+
+- this chapter is about memory allocation
+- languages like java do garbage collection, others make you explicitly allocate and free the memory. rust uses ownership
+- stack (like the algorithm) - last in, first out like plate stacks. you push and pop. data must have a known fixed size
+- heap - finds an empty spot, puts it there, gets a pointer. pointers can be put on a stack, when you want actual data you follow the pointer. restaurant seat at a table analogy
+- stack is generally more efficient (no pointers, no searching)
+- ownership main function is to manage heap data. Keeping track of what parts of code are using what data on the heap, minimizing the amount of duplicate data on the heap, and cleaning up unused data on the heap so you don’t run out of space are all problems that ownership addresses.
+
+Ownership rules:
+- Each value in Rust has an owner.
+- There can only be one owner at a time.
+- When the owner goes out of scope, the value will be dropped.
+
+- String data is managed/allocated on the heap
+- question answered: types with known size are allocated on the stack? like integers? YES
+
+- string literals are immutable, put into the binary at compile time. String types are mutable and memory is allocated on the heap for those boys
+
+- when a variable is out of scope the function drop is called in rust to deallocate memory, other languages make you do this manually
+
+these two are not the same. because of memory allocation. integers go on the stack, strings go in the heap. you can't just call s1. if you called s2 in the println! that would work. due to ownership and borrowing. if you used the clone method you could call s1. has to do with memory allocation and pointers
+
+```
+    let s1 = String::from("hello");
+    let s2 = s1;
+    println!("{}, world!", s1);
+```
+
+```
+    let s1 = 6;
+    let s2 = s1;
+    println!("{}, world!", s1);
+```
+
+- question: wondering how the pointers work when a variable gets reassigned.
+
+```
+let x = 6;
+let y = x;
+let x = 5;
+would y equal to 6 or 5? the answer is 6. y will never auto update if x changes so the pointer diagram is slightly wrong in fig 4-3?
+```
+
+- clone method
+- Copy trait - use on stack types, won't be invalidated
+- Drop trait - invalidated or cleaned from memory when out of scope
+
+#### Scope
+- 
+
 ## OTHER NOTES
 
-## RUST IN ACTION
+### RUST IN ACTION
 
 closure - anonymous or lambda
 
@@ -241,6 +301,7 @@ Buffer overflow—An attempt to access the 12th element of an array with only 6 
 
 Iterator invalidation—An issue caused by something that is iterated over after being altered midway through (see listing 1.6)
 
+### PERSONAL
 
 static vs dynamically typed - rust is static, so that means you must know all of the variables at compile time and what their type is definitively and can only be one type. in dynamic languages javascript you don't necessarily know what to expect at runtime, variable types can change, not as performant, also less ideal for safety and memory reasons. benefit is that it's more efficient to code, dealing less with syntax and more with logic, but less proper. you have to be explicit in declaring types. that way will know everytime that variable is used can tell if its valid or not already
 
@@ -249,3 +310,5 @@ expression based language - statements such as in C and ruby can evaluate to a v
 functional vs other types of programming - in functional data is immutable, focuses more on the functions, doesn't have control flow with loops and conditionals, execution and order of statements can be important.
 
 compiled vs interpreted language - interpret is like translating on the fly, compile is building the program in an assembly language that can be understood
+
+having worked in other languages for web development, systems cares much more about performance, different from approach of using programming for data analysis/business logic
