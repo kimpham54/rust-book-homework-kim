@@ -275,9 +275,11 @@ would y equal to 6 or 5? the answer is 6. y will never auto update if x changes 
 - clone method
 - Copy trait - use on stack types, won't be invalidated
 - Drop trait - invalidated or cleaned from memory when out of scope
+- move vs drop
 
-#### Scope
-- 
+#### References and borrowing
+- instead of using the same variable and calling it around and using tuples to achieve this, the clean way to do this is to use references
+
 
 ## OTHER NOTES
 
