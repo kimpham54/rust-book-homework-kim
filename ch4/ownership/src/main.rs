@@ -1,26 +1,30 @@
 fn main() {
-    //     let s1 = String::from("hello");
+    let mut s = String::from("hello");
 
-    //     let len = calculate_length(s1);
+    let r1 = &s; // no problem
+    let r2 = &s; // no problem
+    let r3 = &mut s; // BIG PROBLEM
 
-    //     println!("The length of '{}' is {}.", s1, len);
+    println!("{}, {}, and {}", r1, r2, r3);
+
+    // can have unlimited immutable references
+
+    // let mut s = String::from("hello");
+
+    // let r1 = &s; // no problem
+    // let r2 = &s; // no problem
+    // let r3 = &s; // BIG PROBLEM
+
+    // println!("{}, {}, and {}", r1, r2, r3);
+
+    // can't borrow simultaneous mutable references to the same var and use it same time without finishing use
+
+    // fn main() {
+    //     let mut s = String::from("hello");
+
+    //     let r1 = &mut s;
+    //     let r2 = &mut s;
+
+    //     println!("{}, {}", r1, r2);
     // }
-
-    // fn calculate_length(s: String) -> usize {
-    //     let length = s.len(); // len() returns the length of a String
-
-    //     length
-    // this doesn't work because the s1 is value is borrowed after the move, need to use reference &s1
-
-    let s1 = String::from("hello");
-
-    let (s2, len) = calculate_length(s1);
-
-    println!("The length of '{}' is {}.", s2, len);
-}
-
-fn calculate_length(s: String) -> (String, usize) {
-    let length = s.len(); // len() returns the length of a String
-
-    (s, length)
 }

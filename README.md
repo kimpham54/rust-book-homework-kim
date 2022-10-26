@@ -11,6 +11,7 @@ goals:
 updates:
 - oct22: finished ch 1,2, started ch 3
 - oct23: finished ch 3, started ch 4
+- oct26: finished ch 4
 
 
 ## THE RUST BOOK
@@ -237,7 +238,7 @@ know:
 - stack is generally more efficient (no pointers, no searching)
 - ownership main function is to manage heap data. Keeping track of what parts of code are using what data on the heap, minimizing the amount of duplicate data on the heap, and cleaning up unused data on the heap so you don’t run out of space are all problems that ownership addresses.
 
-Ownership rules:
+**Ownership rules:**
 - Each value in Rust has an owner.
 - There can only be one owner at a time.
 - When the owner goes out of scope, the value will be dropped.
@@ -272,14 +273,26 @@ let x = 5;
 would y equal to 6 or 5? the answer is 6. y will never auto update if x changes so the pointer diagram is slightly wrong in fig 4-3?
 ```
 
-- clone method
-- Copy trait - use on stack types, won't be invalidated
-- Drop trait - invalidated or cleaned from memory when out of scope
-- move vs drop
+- **clone** method
+- **Copy trait** - use on stack types, won't be invalidated
+- **Drop trait** - invalidated or cleaned from memory when out of scope
+- **move** vs drop
 
 #### References and borrowing
 - instead of using the same variable and calling it around and using tuples to achieve this, the clean way to do this is to use references
+- **reference (&)**: like a pointer to access data that is owned by some other variable. unlike a pointer a ref is guaranteed to point to a valid value while it exists
+- that way you don't have to create a new variable to use it again/no need to trtakeansfer ownership. you just borrow.
+- **borrowing** - the action of creating a reference
+- references are immutable by default, We’re not allowed to modify something we have a reference to, can do with mutable references - &mut varname. original variable needs to be mutable too
+- borrowing is strict, you can't have multiple mutable references until it's done being used the first time to control for mutation in a controlled fashion - i'm guessing this is for safety reasons - ah it prevents data races at compile time
 
+A **data race** is similar to a race condition and happens when these three behaviors occur:
+
+- Two or more pointers access the same data at the same time.
+- At least one of the pointers is being used to write to the data.
+- There’s no mechanism being used to synchronize access to the data.
+
+- curly brackets new scope to ref the same variable but rust will not allow simultaneous references
 
 ## OTHER NOTES
 
