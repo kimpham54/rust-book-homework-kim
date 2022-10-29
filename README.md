@@ -11,7 +11,7 @@ goals:
 updates:
 - oct22: finished ch 1,2, started ch 3
 - oct23: finished ch 3, started ch 4
-- oct26: finished ch 4
+- oct27: finished ch 4
 
 
 ## THE RUST BOOK
@@ -238,10 +238,11 @@ know:
 - stack is generally more efficient (no pointers, no searching)
 - ownership main function is to manage heap data. Keeping track of what parts of code are using what data on the heap, minimizing the amount of duplicate data on the heap, and cleaning up unused data on the heap so you don’t run out of space are all problems that ownership addresses.
 
-**Ownership rules:**
-- Each value in Rust has an owner.
-- There can only be one owner at a time.
-- When the owner goes out of scope, the value will be dropped.
+
+> Ownership rules:
+> Each value in Rust has an owner.
+> There can only be one owner at a time.
+> When the owner goes out of scope, the value will be dropped.
 
 - String data is managed/allocated on the heap
 - question answered: types with known size are allocated on the stack? like integers? YES
@@ -293,6 +294,66 @@ A **data race** is similar to a race condition and happens when these three beha
 - There’s no mechanism being used to synchronize access to the data.
 
 - curly brackets new scope to ref the same variable but rust will not allow simultaneous references
+
+- hmm the code is really designed with safety in mind - so if you're ever trying to debug something just remember that and think what's logically the safest, that could be why it's not working
+
+- variable gets released to be borrowed again once it is used (aka when scopes don't overlap) = Non Lexical Lifetimes
+
+- **dangling pointer** pointer that references a location in memory that may have been given to someone else, frees memory but preserves a pointer to that memory. rust will not let compile if data goes out of scope before its reference does
+
+#### The Slice Type
+- slice like in python but the definition is worded differently! it's a reference so does not have ownership
+- enumerate, iterate, byte literal, as_bytes
+- function arrow returning values not tied to state, e.g. fn second_word(s: &String) -> (usize, usize) {
+- string slices
+
+types of borrowing:
+- mutable reference looks like -> `&mut value` -> mutable borrow
+- immutable reference looks like -> `&value` even if the original declaration is mut -> read only borrow
+- are all subsequent mentions of a variable a reference, aka borrowed?
+
+
+> Rule 1: If you have only immutable references, you can have as many as you want. 1 is fine, 3 is fine, 1000 is fine. No problem.
+> Rule 2: If you have a mutable reference, you can only have one. Also, you can't have an immutable reference and a mutable reference together.
+
+- ok String and str is pretty hard to understand. https://blog.thoughtram.io/string-vs-str-in-rust/. here goes:
+- String std::String::String objects have its buffer, capacity, and length
+- String slices str reference a range of text owned by someone else (that is tied to some underlying data), or are strong literals e.g. let mut dog = "Merle". they don't have a capacity. are stored in read only memory
+
+the concepts of ownership, borrowing, slices is important to write memory safe programs
+
+https://dhghomon.github.io/easy_rust/Chapter_11.html
+
+### Chapter 5 - Structs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## OTHER NOTES
 
