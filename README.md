@@ -314,7 +314,7 @@ types of borrowing:
 
 
 > Rule 1: If you have only immutable references, you can have as many as you want. 1 is fine, 3 is fine, 1000 is fine. No problem.
-> Rule 2: If you have a mutable reference, you can only have one. Also, you can't have an immutable reference and a mutable reference together.
+> Rule 2: If you have a mutable reference, you can only have one at a time. Also, you can't have an immutable reference and a mutable reference together.
 
 - ok String and str is pretty hard to understand. https://blog.thoughtram.io/string-vs-str-in-rust/. here goes:
 - String std::String::String objects have its buffer, capacity, and length
@@ -328,7 +328,7 @@ i had to read over this chapter again and again. finally posting on stack overfl
 
 ### Chapter 5 - Structs
 
-- structs like in OOP have fields like attributes. you can have instances
+- structs like in OOP are custom types for your domain. they are good for organization, have fields like attributes. you can have instances
 - struct uses = for assignment. if you use the values from user1 in user 2 it moves data if its a String type, for boolean/integer it's a Copy. 
 - structs aree its own type, even if they have similar values within their types
 
@@ -362,9 +362,78 @@ can use:
 #![allow(dead_code)]
 ```
 
+i opened a ticket: https://github.com/rust-lang/book/issues/3409
+
 #### Methods
 - functions in the context of a struct, enum, or trait object
 - first parameter is self
+- use the `impl` to start a block associated with your struct type
+- use &self if you just want to borrow the Self instance, as they can take ownership of self, borrow immutably (using &self) or borrow mutable (&mut self)
+- If we wanted to change the instance that we’ve called the method on as part of what the method does, we’d use &mut self as the first parameter. 
+
+if you use &mut self in this way:
+
+new dog1 =  Dog {
+    name: 'merle'
+    colour: 'read',
+}
+
+and did 
+
+&mut self and change the name and did it for a new dog2, does it change dog1 and add to dog2
+
+from book, answered my reddit question
+
+```
+Rust doesn’t have an equivalent to the -> operator; instead, Rust has a feature called automatic referencing and dereferencing. Calling methods is one of the few places in Rust that has this behavior.
+
+Here’s how it works: when you call a method with object.something(), Rust automatically adds in &, &mut, or * so object matches the signature of the method. In other words, the following are the same:
+
+p1.distance(&p2);
+(&p1).distance(&p2);
+The first one looks much cleaner. This automatic referencing behavior works because methods have a clear receiver—the type of self. Given the receiver and name of a method, Rust can figure out definitively whether the method is reading (&self), mutating (&mut self), or consuming (self). The fact that Rust makes borrowing implicit for method receivers is a big part of making ownership ergonomic in practice.
+```
+
+- all functions within impl block are associated functions
+- associated functions are methods (self as first parameter) or can also be not methods (e.g. constructors that return a new instance of the struct)
+- use :: for associated functions (question: for assoc. functions that aren't methods? methods have . right?)
+
+#### Chapter 6 - Enums, pattern matching
+
+- enum: you can say a value is one of a possible set of values. an anum calue can only be one of its variants not multiple
+- name of each variant becomes a function that constructs :: an instance. function call returns an instance
+- can put any kind of data in an enum, incl. structs and other enums
+- enums can have methods using impl as well
+- enum **Option** handles the case where  a value could be something or nothing. if something you request isn't valid you'll get nothing
+- Rust does not have null to prevent errors. one of the common issues is when it is assumed a value is not null when it actually is. it uses Option<T> where the varianes are Some(T) T as in type or None
+- convert Option<T> to a T before you can perform T options with it e.g. can't do 
+
+
+```
+fn main() {
+    let x: i8 = 5;
+    let y: Option<i8> = Some(5);
+
+    let sum = x + y;
+}
+```
+
+- have to explicitly handle the case when a value is null
+- use **match** as control flow construct with enums to handle variants, Some(T), None, inner T, no T available
+
+#### The match control flow construct
+
+- use match to compare value against a series of patterns
+- difference with if is with if expression returns a boolean. here it can return any type
+- match syntax `pattern => code to run`
+- when match executes, compares value against pattern of each arm in order then executes code of matching arm.
+
+> Matches in Rust are exhaustive: we must exhaust every last possibility in order for the code to be valid. Especially in the case of Option<T>, when Rust prevents us from forgetting to explicitly handle the None case
+
+- match has a catch all pattern some variable name
+- can use _ a special pattern that matches any value but does not bind to that value (don't bring that value into the match arm to be used)
+
+
 
 
 
