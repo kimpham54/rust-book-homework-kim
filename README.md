@@ -35,7 +35,7 @@ your app code is in src/main.rs
 `cargo build --release` to compile it with optimizations
 
 #### Macros, functions, methods in Rust
-macro - writes code that writes other code, metaprogramming. println! expands to produce more code
+macro - code shortcut, code that writes other code, aka metaprogramming. println! expands to produce more code
 
 Macros are executed at compile time. They generally expand into new pieces of code that the compiler will then need to further process.
 
@@ -305,7 +305,7 @@ A **data race** is similar to a race condition and happens when these three beha
 - slice like in python but the definition is worded differently! it's a reference so does not have ownership
 - enumerate, iterate, byte literal, as_bytes
 - function arrow returning values not tied to state, e.g. fn second_word(s: &String) -> (usize, usize) {
-- string slices
+- string slices &str, you don't have ownership of data in this case. this was a really nice explanation: https://blog.thoughtram.io/string-vs-str-in-rust/. this helped too https://www.youtube.com/watch?v=8M0QfLUDaaA
 
 types of borrowing:
 - mutable reference looks like -> `&mut value` -> mutable borrow
@@ -324,16 +324,28 @@ the concepts of ownership, borrowing, slices is important to write memory safe p
 
 https://dhghomon.github.io/easy_rust/Chapter_11.html
 
+i had to read over this chapter again and again. finally posting on stack overflow, reddit, and discord. it's hard to wrap your head around, it's something you take for granted with other languages. it's going to take time for this to feel intuitive
+
 ### Chapter 5 - Structs
 
+- structs like in OOP have fields like attributes. you can have instances
+- struct uses = for assignment. if you use the values from user1 in user 2 it moves data if its a String type, for boolean/integer it's a Copy. 
+- structs aree its own type, even if they have similar values within their types
 
+```
+struct Color(i32, i32, i32);
+struct Point(i32, i32, i32);
 
+fn main() {
+    let black = Color(0, 0, 0);
+    let origin = Point(0, 0, 0);
+}
 
+```
 
+> The tuple without any values has a special name, unit. This value and its corresponding type are both written () and represent an empty value or an empty return type. Expressions implicitly return the unit value if they don’t return any other value.
 
-
-
-
+> almost everything is an expression in rust. evaluates to something
 
 
 
@@ -383,8 +395,20 @@ static vs dynamically typed - rust is static, so that means you must know all of
 
 expression based language - statements such as in C and ruby can evaluate to a value, but in rust statements dont return a value, and expressions do and it makes that very distinct
 
+> Statements are instructions that perform some action and do not return a value.
+
+> Expressions evaluate to a resulting value.
+
 functional vs other types of programming - in functional data is immutable, focuses more on the functions, doesn't have control flow with loops and conditionals, execution and order of statements can be important.
 
 compiled vs interpreted language - interpret is like translating on the fly, compile is building the program in an assembly language that can be understood
 
 having worked in other languages for web development, systems cares much more about performance, different from approach of using programming for data analysis/business logic
+
+### Ways to get help 
+- stack overflow
+- https://users.rust-lang.org/
+- linter
+- zulip mentor
+- discord https://discord.com/channels/442252698964721669/448238009733742612
+- reddit https://www.reddit.com/r/learnrust/ or rust
