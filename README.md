@@ -305,7 +305,7 @@ A **data race** is similar to a race condition and happens when these three beha
 - slice like in python but the definition is worded differently! it's a reference so does not have ownership
 - enumerate, iterate, byte literal, as_bytes
 - function arrow returning values not tied to state, e.g. fn second_word(s: &String) -> (usize, usize) {
-- string slices &str, you don't have ownership of data in this case. this was a really nice explanation: https://blog.thoughtram.io/string-vs-str-in-rust/. this helped too https://www.youtube.com/watch?v=8M0QfLUDaaA
+- string slices &str, you don't have ownership of data in this case. this was a really nice explanation: https://blog.thoughtram.io/string-vs-str-in-rust/. this helped too https://www.youtube.com/watch?v=8M0QfLUDaaA or https://www.openmymind.net/Rust-Strings/
 
 types of borrowing:
 - mutable reference looks like -> `&mut value` -> mutable borrow
@@ -346,6 +346,8 @@ fn main() {
 > The tuple without any values has a special name, unit. This value and its corresponding type are both written () and represent an empty value or an empty return type. Expressions implicitly return the unit value if they don’t return any other value.
 
 > almost everything is an expression in rust. evaluates to something
+
+- strcuts are useful when you want to add more meaning e.g. in writing your functions
 
 
 
