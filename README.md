@@ -349,16 +349,22 @@ fn main() {
 
 - strcuts are useful when you want to add more meaning e.g. in writing your functions
 
+more Rust traits https://doc.rust-lang.org/book/appendix-03-derivable-traits.html
 
+- Debug (from derive)
 
+- an alternative to println! is dbg! you can wrap around an expression, or object
 
+can use:
 
+```
+#[derive(Debug)]
+#![allow(dead_code)]
+```
 
-
-
-
-
-
+#### Methods
+- functions in the context of a struct, enum, or trait object
+- first parameter is self
 
 
 
