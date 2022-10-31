@@ -331,6 +331,7 @@ i had to read over this chapter again and again. finally posting on stack overfl
 - structs like in OOP are custom types for your domain. they are good for organization, have fields like attributes. you can have instances
 - struct uses = for assignment. if you use the values from user1 in user 2 it moves data if its a String type, for boolean/integer it's a Copy. 
 - structs aree its own type, even if they have similar values within their types
+- custom types in your API ensures type safety by compiler making sure your functions only get values of the type each function expects
 
 ```
 struct Color(i32, i32, i32);
@@ -404,7 +405,7 @@ The first one looks much cleaner. This automatic referencing behavior works beca
 - name of each variant becomes a function that constructs :: an instance. function call returns an instance
 - can put any kind of data in an enum, incl. structs and other enums
 - enums can have methods using impl as well
-- enum **Option** handles the case where  a value could be something or nothing. if something you request isn't valid you'll get nothing
+- enum **Option** as part of the standard library handles the case where  a value could be something or nothing. if something you request isn't valid you'll get nothing
 - Rust does not have null to prevent errors. one of the common issues is when it is assumed a value is not null when it actually is. it uses Option<T> where the varianes are Some(T) T as in type or None
 - convert Option<T> to a T before you can perform T options with it e.g. can't do 
 
@@ -423,7 +424,7 @@ fn main() {
 
 #### The match control flow construct
 
-- use match to compare value against a series of patterns
+- use match to compare value against a series of patterns. can use when enum values have data inside them and you want to extract and use those values
 - difference with if is with if expression returns a boolean. here it can return any type
 - match syntax `pattern => code to run`
 - when match executes, compares value against pattern of each arm in order then executes code of matching arm.
@@ -432,6 +433,22 @@ fn main() {
 
 - match has a catch all pattern some variable name
 - can use _ a special pattern that matches any value but does not bind to that value (don't bring that value into the match arm to be used)
+
+- use `if let` if you just want to handle a Some(T) without having to write a handle case for None (i.e. `_ => ()`). else is like the _ case if you want but don't have to use
+- if let is syntax sugar for match, runs code when the value matches one pattern and ignores all other values
+
+#### Chapter 7 Project Management - packages, crates, modules
+
+- useful to organize code, group functionality, separate code
+- Packages (one or more crates set of functionality, min 1 crate max 1 library crate)
+- Crates (binary and library)
+- Modules
+- Paths
+
+- src/main.rs - crate root part of module called crate
+- src/lib.rs - library crate, crate root too part of module called crate
+- src/bin - put your binary crates here
+
 
 
 
