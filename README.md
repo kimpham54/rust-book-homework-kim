@@ -449,10 +449,68 @@ fn main() {
 - src/lib.rs - library crate, crate root too part of module called crate
 - src/bin - put your binary crates here
 
+- use, pub, mod  declarations, namespace, idiomatic shortcuts
+
+#### Chapter 8 - Collections
+- also stored on heap, meaning data does not need to be known at compile time, can grow or shrink
+- Vector - values next to each other in memory in a single data structure. all the same type. useful for lists Vec<T>
+- String
+- hash map aka map
+
+diff from tuple and array
+
+- can use get or [] index reference. using get gives you an Option <&T> that can be used with match
+
+```
+   let v = vec![1, 2, 3, 4, 5];
+
+    let does_not_exist = &v[100]; //panic
+    let does_not_exist = v.get(100); //returns None
+```
+
+i wish there were more explanations about how things work in memory. this was a good one
+
+error here:
+```
+ let mut v = vec![1, 2, 3, 4, 5];
+    let first = &v[0];
+    v.push(6);
+    println!("The first element is: {}", first);
+```
+ > This error is due to the way vectors work: because vectors put the values next to each other in memory, adding a new element onto the end of the vector might require allocating new memory and copying the old elements to the new space, if there isn’t enough room to put all the elements next to each other where the vector is currently stored. In that case, the reference to the first element would be pointing to deallocated memory. The borrowing rules prevent programs from ending up in that situation.
 
 
+**Hash maps**
+
+If we insert references to values into the hash map, the values won’t be moved into the hash map. The values that the references point to must be valid for at least as long as the hash map is valid.
+
+- common hash actions:
+- replace value with existing key
+- check if key exists if so keep as is, if not insert key and value. use `entry`and `or_insert` method
+- look up a key and update it based on old value, e.g.
+
+```
+  use std::collections::HashMap;
+    let text = "hello world wonderful world";
+    let mut map = HashMap::new();
+    for word in text.split_whitespace() {
+        let count = map.entry(word).or_insert(0);
+        *count += 1;
+    }
+    println!("{:?}", map);
+```
+prints {"world": 2, "hello": 1, "wonderful": 1}
 
 
+- strings are a collection of bytes. they are actually a vector of byets with some stringy characteristics
+- string concat use `+` or `format!`
+- push_str doesn't take ownership. as i found out in ch 4
+- question: why can't you add two String values together, smoething to do with memory
+- coercion vs deref coercion - rust can coax a &String into being a &str to use the add function
+
+- strings have characters that also have byte representations, and so when you work with them know what you're working with 
+
+- can use char() vs bytes()
 
 
 
@@ -498,6 +556,10 @@ functional vs other types of programming - in functional data is immutable, focu
 compiled vs interpreted language - interpret is like translating on the fly, compile is building the program in an assembly language that can be understood
 
 having worked in other languages for web development, systems cares much more about performance, different from approach of using programming for data analysis/business logic
+
+- rust is a static strongly typed language - static - check the types and look for errors during compile time before running program. dynamic you find out when running. strong - checks types and enfroces you use them, need to convert mix types to use together. can't mix or match types like in JS. e.g. rust once you assign a var a type can't change 
+
+- looking at methods or function signatures helps you understand what's going on, esp with strings
 
 ### Ways to get help 
 - stack overflow
