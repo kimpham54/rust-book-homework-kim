@@ -512,7 +512,32 @@ prints {"world": 2, "hello": 1, "wonderful": 1}
 
 - can use char() vs bytes()
 
+remaining chapters to go through:
+#### Chapter 9 - error handling
+- panic! prints a failure, unwinds, cleans up the stack, and quits. can also abort which doesn't clean up cause it takes long
+- buffer overread e.g. attempt to access element in vector that doesn't exist at v[100]
+- rust has a backtrace tell you functions and how to troubleshoot
+- call Result<T,E> is an enum for Ok(T) and Error(E) variants
+- ? as shortcut if the return type is compatible
+- ? expects Result or Option (Some/None)
+- error propagation - pushing (propagating) the error somewhere else: handling error outside of calling code, and then returning the result there 
+- when to use panic vs result:
+- panic in test environments
+- unwrap, expect are shortcuts for panic
 
+#### Chapter 10 - generic types, traits, lifetimes
+- generics include Option, Vec, Hashmap, Result where values are unknown though in a controlled way once compiled and running
+
+#### Chapter 11 - automated tests
+- assert!, assert_eq!, assert_neq!, Result<T,E>
+- cargo test
+- unit tests - units of code
+- integration tests - test if many parts of your library work together correctly. units could work on their own but have problems when integrated
+
+#### Chapter 13 - functional programming: iterators and closures
+
+
+#### Chapter 19 - advanced features (unsafe rust, traits, types, functions, closures, macros)
 
 
 
@@ -568,3 +593,6 @@ having worked in other languages for web development, systems cares much more ab
 - zulip mentor
 - discord https://discord.com/channels/442252698964721669/448238009733742612
 - reddit https://www.reddit.com/r/learnrust/ or rust
+- https://cheats.rs/
+
+- still lingering question: enum arms are exhastive, can you use none as an option
