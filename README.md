@@ -528,8 +528,28 @@ remaining chapters to go through:
 
 #### Chapter 10 - generic types, traits, lifetimes
 - generics include Option, Vec, Hashmap, Result where values are unknown though in a controlled way once compiled and running
-
-
+- make functions generic by extracting to remove code duplication, paramterizing types
+- When you recognize situations in your code with multiple struct or enum definitions that differ only in the types of the values they hold, you can avoid duplication by using generic types
+- can have generic methods on structs and enums,
+```
+struct Point<T> {
+    x: T,
+    y: T,
+}
+impl<T> Point<T> {
+    fn x(&self) -> &T {
+        &self.x
+    }
+}
+fn main() {
+    let p = Point { x: 5, y: 10 };
+    println!("p.x = {}", p.x());
+}
+```
+- declares types after impl using impl<T> flexible to use on diff types
+- traits can have multiple methods. each type that uses the trait must provide its own custom behaviour in the body of the method
+- can gain methods implicitly by defining traits that call other traits
+- default implementations, overriding implementations
 
 #### Chapter 11 - automated tests
 - assert!, assert_eq!, assert_neq!, Result<T,E>
@@ -623,6 +643,7 @@ benefits of rust
 - linker compiler
 - ahead-of-time compiled language
 - prelude - e.g. set of items defined in standard libraires that brings into scope of every program
+- monomorphization
 
 ## Chapter 2
 - immutable/mutable
@@ -691,6 +712,7 @@ benefits of rust
 - match, arms. matches are exhaustive
 - _ catch0all pattern
 - if let - shortcut for match, less boilerplate code, syntax sugar, use when value matches one pattern and ignores all other values
+- enums have methods too
 ## Chapter 7
 - workspace
 ------------------
@@ -744,6 +766,10 @@ benefits of rust
 - generics - abstract stand ins for concrete types
 - traits - to constrain generic types to a behaviour
 - lifetimes - variety of generics that give compiler info about how references relate to each other
+- Monomorphization, there is no cost to using generics than with concrete types
+- trait, known as interfaces in other languages with some differences. groups method signatures together to define a set of behaviours to accomplish some purpose
+- trait bounds
+- coherence restriction property, orphan rule. where traits cannot be implemented on a type that isn't local to your crate code
 
 ## Chapter 11
 

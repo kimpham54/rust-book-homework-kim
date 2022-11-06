@@ -117,3 +117,18 @@ fn main() {
 
 //     println!("names: {:?}", names);
 // }
+
+fn main() {
+    let number_list = vec![34, 50, 25, 100, 65];
+
+    let mut largest = &number_list[0];
+
+    for number in &number_list {
+        if number > largest {
+            let largest = number; //original code didn't have let
+        }
+    }
+
+    println!("The largest number is {}", largest);
+}
+// largest stays as 34 cause let largest = number is inner scope shadowing
