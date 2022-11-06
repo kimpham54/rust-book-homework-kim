@@ -513,6 +513,7 @@ prints {"world": 2, "hello": 1, "wonderful": 1}
 - can use char() vs bytes()
 
 remaining chapters to go through:
+
 #### Chapter 9 - error handling
 - panic! prints a failure, unwinds, cleans up the stack, and quits. can also abort which doesn't clean up cause it takes long
 - buffer overread e.g. attempt to access element in vector that doesn't exist at v[100]
@@ -527,6 +528,8 @@ remaining chapters to go through:
 
 #### Chapter 10 - generic types, traits, lifetimes
 - generics include Option, Vec, Hashmap, Result where values are unknown though in a controlled way once compiled and running
+
+
 
 #### Chapter 11 - automated tests
 - assert!, assert_eq!, assert_neq!, Result<T,E>
@@ -594,5 +597,164 @@ having worked in other languages for web development, systems cares much more ab
 - discord https://discord.com/channels/442252698964721669/448238009733742612
 - reddit https://www.reddit.com/r/learnrust/ or rust
 - https://cheats.rs/
+https://dhghomon.github.io/easy_rust/Chapter_17.html
+- Rust by Example
+- Rust Reference
+https://blog.boot.dev/rust/variable-shadowing-in-rust/
+https://blog.thoughtram.io/string-vs-str-in-rust/
+- pascal precht
 
 - still lingering question: enum arms are exhastive, can you use none as an option
+
+
+
+
+
+# terms
+
+benefits of rust
+- references make it safe
+- strong, static types
+- prevent data races at comppile time (ch 4.2)
+- memory safety
+- avoids null references, all references are always valid
+
+## Chapter 1
+- linker compiler
+- ahead-of-time compiled language
+- prelude - e.g. set of items defined in standard libraires that brings into scope of every program
+
+## Chapter 2
+- immutable/mutable
+- library crate
+- registry
+- mismatched types
+## Chapter 3
+- keywords
+- shadowing - often used to convert one type to another type. when you redeclare a variable
+- scalar type - single values
+- integer overflow
+- two's complement wrapping
+- compound types
+- snake_case not camelCase
+- expressions, statements.
+- statements (2 kinds declaration letstatement, expressionstatement where it ignores the result see rust reference)
+- expressions (many see https://doc.rust-lang.org/reference/expressions.html)
+- match, arms
+## Chapter 4
+- garbage collection
+- pointer
+- allocating on the heap, memory allocation
+- owner
+- scope
+- drop - deallocating resources at the end of a lifetime
+** aka resource acquisition is initialization RAII
+- double free error
+- invalidated reference
+- shallow copy
+- deep copy
+- move
+- automatic copy
+- clone
+- copy
+- references
+- dereferencing
+- borrowing - the action of creating a reference
+- mutable/immutable reference
+- data race
+- non lexical lifetimes NLL
+- dangling pointer, dangling references
+- slices are references, always being borrowed
+- deref coercions
+
+
+- utf8
+- memory leak
+## Chapter 5
+- struct, fields
+- instance
+- struct update syntax
+- tuple like struct
+- unit like struct
+- lifetimes
+- macro
+- method impl
+- getters
+- automatic referencing and dereferencing
+- associated function - functions defined within an impl block
+- constructors
+## Chapter 6
+- enum: useful if you want to know what kind of data you have and store the data. each variant can have diff types and amountsof associated data vs struct.
+- variant
+- Option<T> -> Some<T> or None is a generic
+- there is no null, but None exists in option. () is unit type
+- match, arms. matches are exhaustive
+- _ catch0all pattern
+- if let - shortcut for match, less boilerplate code, syntax sugar, use when value matches one pattern and ignores all other values
+## Chapter 7
+- workspace
+------------------
+-The module system
+
+- crates - smallest amount of code - binary or library crate
+- binary: pexecutable programs you can run, has main function
+- library: no main function, doesnt compile to an executable, functionality shared with multiple projects
+- crate root - source file that compiler starts from and makes up root module
+
+- packages - one or more creates set of functionality, e.g. cargo. can contain as many binary crates, 1 library crate. min 1 crate
+
+- modules, submodules modules let us organize code within a crate for reuse. control privacy with public/private. private by default
+- paths, absolute from crate root vs self, super for relative
+- structs by default all private
+- enums once public all public
+- use keyword to make valid/invalid bring into scope. parent/child
+- re-exporting module
+---------------------
+- scope - managed by this organization
+- idiomatic
+- encapsulation
+- nested context
+- alias
+## Chapter 8
+- collections are scalable not determined size. data stored on the heap.
+- vector Vec<T> is homogenous store values same type
+- String (not string literal, not &str/str string slice) - implemented as a wrapper around a vector of bytes with some xtra guarantees, restrictions, capabilities
+- reference/deref coercion see Ch 15
+- UTF-8 encoded
+- scalar values, grapheme clusters, bytes byte representation to store characters aka Unicode scalar values
+
+- hash map - hashing function, like a dictionary, stores a mapping of keys to values. next to each other in memory and determines how it places these. homogenous data keys same, values same type
+- SipHash hasher
+- talks a bit more about function signatures and push_str exactly my confusion before
+## Chapter 9
+- recoverable and unrecoverable errors
+- panic!
+- unwinding, aborting
+- buffer overread - read beyond a data structure
+- backtrace - list all functions have been called up until this point to troubleshoot
+- Result<T,E> => Ok<T>, Err<E> is a generic
+- unwrap - shortcut like match. use for Result -> OK or Err will return panic!
+- expect -> use instead of unwrap, Ok and then if Error includes custom message with panic!
+- propagating the error - handling the error where you want it to not necessarily where it happens. spread or move it forward use ? shortcut instead for syntax sugar, replaces Result, OK, Err
+- bad state vs. expected failure
+- contracts - functions have contracts, their behaviour guarnateed if inputs meet requirements
+
+- function signature
+## Chapter 10
+- generics - abstract stand ins for concrete types
+- traits - to constrain generic types to a behaviour
+- lifetimes - variety of generics that give compiler info about how references relate to each other
+
+## Chapter 11
+
+## Chapter 13
+
+## Chapter 19
+
+
+extra
+- buffer overflow
+- idempotent
+- question: structs and enums are data structures not types, and they are hetrogeneous?
+
+- blockchain merkle tree hash tree, linked list
