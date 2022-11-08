@@ -550,6 +550,21 @@ fn main() {
 - traits can have multiple methods. each type that uses the trait must provide its own custom behaviour in the body of the method
 - can gain methods implicitly by defining traits that call other traits
 - default implementations, overriding implementations
+- traits can be parameters too, pass in any type that has that trait
+- trait bound set restrictions, if you want to constrain function to the same or different types can do so. with impl trait or with trait bound syntax <T: summary etc>
+- where clauses for cleaner function signatures
+- can return a value of a type that implements a trait if impl Trait is in the return position of a function signature. returns a type. useful for closures and iterators. can only return 1 type of that trait. multiple options not allowed
+- most of the time inferred like types. annotate when multiple types are possible, similarly annotate when lifetimes of refernces could be related in diff ways ensure its valid
+- annotate lifetimes for functions
+- 'a lifetime symbol denotation for borrow checker to check. means sshortest of the 2, doesn't change a lifetime and doesn't need to know exact lifetime . where lifetimes overlap
+- goes into function signature
+- string literals are refernces, use lifetimes for references
+
+3 rules for lifetimes
+1. all references get their own lifetime
+2. if one input the same lifetime gets assigned
+3. self gets same lifetime as output
+
 
 #### Chapter 11 - automated tests
 - assert!, assert_eq!, assert_neq!, Result<T,E>
@@ -608,6 +623,10 @@ having worked in other languages for web development, systems cares much more ab
 - rust is a static strongly typed language - static - check the types and look for errors during compile time before running program. dynamic you find out when running. strong - checks types and enfroces you use them, need to convert mix types to use together. can't mix or match types like in JS. e.g. rust once you assign a var a type can't change 
 
 - looking at methods or function signatures helps you understand what's going on, esp with strings
+
+- semantic assignment difference between binding and assignment
+- https://stackoverflow.com/questions/55204816/what-is-the-meaning-of-the-error-left-hand-of-expression-not-valid
+- https://stackoverflow.com/questions/47648958/whats-the-semantic-of-assignment-in-rust/47649554#47649554
 
 ### Ways to get help 
 - stack overflow
@@ -770,6 +789,17 @@ benefits of rust
 - trait, known as interfaces in other languages with some differences. groups method signatures together to define a set of behaviours to accomplish some purpose
 - trait bounds
 - coherence restriction property, orphan rule. where traits cannot be implemented on a type that isn't local to your crate code
+- blanket implementations
+- compile time checking
+- lifetimes - every reference in rust has a lifetime, which is the scope for which that reference is valid
+- dangling references - use lifetimes to prevent a program to reference data other than its intended reference
+- borrow checker (the infamous) - compares scopes to determine whether all borrows are valid
+- lifetime annotation syntax
+- lifetme elision rules
+- input/output lifetimes
+- dangling references
+- static
+
 
 ## Chapter 11
 
