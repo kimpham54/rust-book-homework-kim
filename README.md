@@ -572,10 +572,58 @@ fn main() {
 - unit tests - units of code
 - integration tests - test if many parts of your library work together correctly. units could work on their own but have problems when integrated
 
+- a test is a function annotated with a test attribute
+- you can run tests in parallel or consecutively. careful if parallel and tests conflict with one another - so this can happen if you're overwriting a file. ok but if you're doing parallel tests like add to a value it's taking the original value not adding up what the new value might be, e.g. value of a isn't changing based on each test kim
+
+```
+pub fn add_two(a: i32) -> i32 {
+    a + 2
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn add_two_and_two() {
+        assert_eq!(4, add_two(2));
+    }
+
+    #[test]
+    fn add_three_and_two() {
+        assert_eq!(5, add_two(3));
+    }
+
+    #[test]
+    fn one_hundred() {
+        assert_eq!(102, add_two(100));
+    }
+}
+```
+
 #### Chapter 13 - functional programming: iterators and closures
 
 
 #### Chapter 19 - advanced features (unsafe rust, traits, types, functions, closures, macros)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -644,6 +692,17 @@ https://blog.thoughtram.io/string-vs-str-in-rust/
 - pascal precht
 
 - still lingering question: enum arms are exhastive, can you use none as an option
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -798,10 +857,23 @@ benefits of rust
 - lifetme elision rules
 - input/output lifetimes
 - dangling references
-- static
+- static lifetime
 
 
 ## Chapter 11
+- assert! for testling left = something or whatever comparison
+- assert_eq! for testing if left and right of the == are equal. left == right
+- assert_neq! useful if you don't know what the value should be but you know what it shouldn't be, so left !== right
+- derive attribute on a trait to get functionality on a type to apply to, i think....
+- format! macro
+- #[should_panic] to be less precise in our test, can use expected to troubleshoot more
+- Result<T, E>
+- assert!(value.is_err())
+- unit tests go in src
+- integration tests go in your test directory, functions need to be public
+- files in tests don't behave in the same way as src, might need to add mod.rs for helper functions or extra code not an integration test file
+- integration tests can only test in lib.rs file. main.rs is generally simple
+- tests go in lib.rs
 
 ## Chapter 13
 
