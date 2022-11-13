@@ -637,13 +637,16 @@ Three types of traits of closures:
 - to use closures properly you have to think about the closure environment, how often it is using the values/variables in that environment, whether or not they are moving out and if you are trying to call them again if they've already moved out. hard! see listing 13-7,8,9
 
 #### Iterators
-- are lazy
+- are lazy (don't do anything unless you consume the iterator using methods like next sum collect)
 - iterators are a trait, .iter()
 - requires the object to define a next method, returning one item wrapped in Some and when iteration is over returns None
 - iterators requires mutability cause it uses up the iterator. for loops take ownership and makes it mutable behind the scenes. gaaah
-- .iter, .into_iter, .iter_mut
-- methods like next, sum consume the iterator as it goes through it, taking ownership. can't call it after the use it's goooone
+- .iter, .into_iter (takes ownership), .iter_mut
+- methods like .next, .sum, .collect are consuming adaptors, they consume the iterator as it goes through it, taking ownership. can't call it after the use it's goooone
+- methods like map are iterator adaptors
+- .filter creates a new iterator (of the filtered results), map and collect does too
 
+- high level ideas at low level performance, runtime performance not affected, not sure how to explain why. lazy runs only when it needs to, compiles to same code almost, loop code is efficient
 
 #### Chapter 19 - advanced features (unsafe rust, traits, types, functions, closures, macros)
 
@@ -752,15 +755,90 @@ https://blog.thoughtram.io/string-vs-str-in-rust/
 
 - still lingering question: enum arms are exhastive, can you use none as an option
 
-# TERMS TERMS TERMS TERMS TERMS
 
-benefits of rust
+#### lambda calculus
+lambda functions
+- map reduce hadoop. map in ruby uses lambdas
+- python uses maps and lambdas too
+
+dog = map(lambda x: x * 2, [1,2,3,4])
+print(list(dog))
+
+- nice for readability and shortcuts
+- anonymous functions that are good for security reasons too. you use and dump right away, it can't be inherited
+- lambda functions good for map and reduce type functions where you want to apply the function to a given list, filter. map - where you want to call the same function over and over on something like a list
+- lambda functions safer throwaway functions apply to list and not do anything else with it can't call/reuse function elsewhere in a dangerous way. it's not a function that can be accessed as easily or inherit something bad. 
+enum
+
+- loops are in functions
+- lambdas are good for looping entire functions
+- lambdas - good for calling a function over and over on something. map, filter, reduce
+
+```
+# dog = map(lambda x: x * 2, [1,2,3,4])
+
+def dog(x):
+  return x*2
+
+cat = dog(3)
+
+# cat2 = [1,2,3,4]
+
+# calling the dog function on the list 
+cat3 = map(dog, [1,2,3,4])
+
+# useful here, just one line
+chicken = map(lambda x:x*2, [1,2,3,4])
+```
+
+```
+def dog(x):
+    return x[1]
+# sort by the index value 1 ascending
+  
+a = [(1, 2), (3, 1), (5, 10), (11, -3)]
+a.sort(key=dog) 
+
+print(a[1])
+```
+
+best - https://stackoverflow.com/questions/47407180/do-lambda-expressions-have-any-use-other-than-saving-lines-of-code
+ok explanation - https://www.geeksforgeeks.org/python-lambda-anonymous-functions-filter-map-reduce/
+ok - https://python-course.eu/advanced-python/lambda-filter-reduce-map.php
+good code - https://stackoverflow.com/questions/3259322/why-use-lambda-functions
+ok - https://stackoverflow.com/questions/890128/how-are-lambdas-useful
+
+- something about enums? static/dynamic types?
+- can create values of anonymous types in some programs
+
+not bad video - https://www.youtube.com/watch?v=m32kbFXBRR0&t=148s
+- https://www.steveclarkapps.com/lambda-calculus/
+- http://morphett.info/turing/turing.html
+- https://brilliant.org/wiki/turing-machines/
+
+- all programming all computers are functions
+- functions take something and transforms it. has a transition state
+- all programming is about manipulating variables
+- https://brilliant.org/wiki/lambda-calculus/
+- variable binding and substitution
+- binding means let, new, comes into scope
+- substitition means...something like assignment but implicit apparently
+- assignment (existing variable come in)
+https://cs.stackexchange.com/questions/126587/difference-between-assignment-binding-and-substitution
+- statements vs expressions
+
+
+
+# benefits of rust
 - references make it safe
 - strong, static types
 - prevent data races at comppile time (ch 4.2)
 - memory safety
 - avoids null references, all references are always valid
+- buffer overflow/buffer overrun - dangling pointers, memory not deallocated
+- 80% or vast majority wired mag says these issues caused by these languaes. borrow checker. no straight pointers and references. immutable types by default, variables change only if explictly telling it can be mutable. borrow checker checks memory and that you did this properly
 
+# TERMS TERMS TERMS TERMS TERMS 
 ## Chapter 1
 - linker compiler
 - ahead-of-time compiled language
@@ -928,9 +1006,17 @@ benefits of rust
 - https://stackoverflow.com/questions/60583618/performance-of-rust-vector-vect-versus-array-t-n
 - array slice reference to an array
 
+
+- closures are a function like construct you can store in a variable. a function that can be called like a variable. like lambdas/pure functions but it never said that
+- iterators, a way of processing a series of elements. iterator objects. not like enums enums for matching
 - lazy
 - associated type
+- consuming adaptor - iterator traits that consume, like next and sum, eats it up as it goes through the iterator object and takes ownership
+- iterator adaptor - doesn't consume the iterator, .map creates a new iterator as it goes through
 
+- zero cost abstractions (such as iterators, high level abstraction but compiled as if lower level)
+- zero-overhead - In general, C++ implementations obey the zero-overhead principle: What you don’t use, you don’t pay for. And further: What you do use, you couldn’t hand code any better.
+- unrolling
 
 ## Chapter 19
 
@@ -942,74 +1028,3 @@ extra
 
 - blockchain merkle tree hash tree, linked list
 
-
-#### lambda calculus
-lambda functions
-- map reduce. map in ruby uses lambdas
-- python uses maps and lambdas too
-
-dog = map(lambda x: x * 2, [1,2,3,4])
-print(list(dog))
-
-- nice for readability and shortcuts
-- anonymous functions that are good for security reasons too. you use and dump right away, it can't be inherited
-- lambda functions good for map and reduce type functions where you want to apply the function to a given list, filter. map - where you want to call the same function over and over on something like a list
-- lambda functions safer throwaway functions apply to list and not do anything else with it can't call/reuse function elsewhere in a dangerous way. it's not a function that can be accessed as easily or inherit something bad. 
-enum
-
-- loops are in functions
-- lambdas are good for looping entire functions
-- lambdas - good for calling a function over and over on something. map, filter, reduce
-
-```
-# dog = map(lambda x: x * 2, [1,2,3,4])
-
-def dog(x):
-  return x*2
-
-cat = dog(3)
-
-# cat2 = [1,2,3,4]
-
-# calling the dog function on the list 
-cat3 = map(dog, [1,2,3,4])
-
-# useful here, just one line
-chicken = map(lambda x:x*2, [1,2,3,4])
-```
-
-```
-def dog(x):
-    return x[1]
-# sort by the index value 1 ascending
-  
-a = [(1, 2), (3, 1), (5, 10), (11, -3)]
-a.sort(key=dog) 
-
-print(a[1])
-```
-
-best - https://stackoverflow.com/questions/47407180/do-lambda-expressions-have-any-use-other-than-saving-lines-of-code
-ok explanation - https://www.geeksforgeeks.org/python-lambda-anonymous-functions-filter-map-reduce/
-ok - https://python-course.eu/advanced-python/lambda-filter-reduce-map.php
-good code - https://stackoverflow.com/questions/3259322/why-use-lambda-functions
-ok - https://stackoverflow.com/questions/890128/how-are-lambdas-useful
-
-- something about enums? static/dynamic types?
-- can create values of anonymous types in some programs
-
-not bad video - https://www.youtube.com/watch?v=m32kbFXBRR0&t=148s
-- https://www.steveclarkapps.com/lambda-calculus/
-- http://morphett.info/turing/turing.html
-- https://brilliant.org/wiki/turing-machines/
-
-- all programming all computers are functions
-- functions take something and transforms it. has a transition state
-- all programming is about manipulating variables
-- https://brilliant.org/wiki/lambda-calculus/
-- variable binding and substitution
-- binding means let, new, comes into scope
-- substitition means...something like assignment but implicit apparently
-- assignment (existing variable come in)
-https://cs.stackexchange.com/questions/126587/difference-between-assignment-binding-and-substitution
-- statements vs expressions
