@@ -524,7 +524,7 @@ remaining chapters to go through:
 - error propagation - pushing (propagating) the error somewhere else: handling error outside of calling code, and then returning the result there 
 - when to use panic vs result:
 - panic in test environments
-- unwrap, expect are shortcuts for panic
+- unwrap, expect are shortcuts for panic. unwrap_or_else(the_or_else_goes_in_here)
 
 #### Chapter 10 - generic types, traits, lifetimes
 - generics include Option, Vec, Hashmap, Result where values are unknown though in a controlled way once compiled and running
@@ -603,8 +603,67 @@ mod tests {
 
 #### Chapter 13 - functional programming: iterators and closures
 
+#### Closures
+- Closures can capture values from their environment in three ways, which directly map to the three ways a function can take a parameter: borrowing immutably, borrowing mutably, and taking ownership. The closure will decide which of these to use based on what the body of the function does with the captured values.
+
+```
+def dog(x):
+    return x[1]
+# sort by the index value 1 ascending
+  
+a = [(1, 2), (3, 1), (5, 10), (11, -3)]
+a.sort(key=dog) 
+
+print(a[1])
+```
+
+- sound a lot like lambdas, anonymous functions, pure functions
+- functions, everything a turing machine
+
+
+- compiler infers type in closure if not explicit, after which it cannot be changed
+- closure body assumes a reference without the & ampersand, because it's the least amount of access needed. use move to explicitly transfer ownership. in some cases you would like spawning threads
+
+Closure capture values from their environment in the same way functions take a parameter:
+- borrows immutably &, except you don't need the &
+- borrows mutably &mut, except you don't need the &
+- transfers ownership let
+
+Three types of traits of closures:
+- Fnonce - call a closure once, all closures implement at least this. can move captured values out of its body
+- FnMut - don't move captured values out of body, mutate possible. called more than once
+- Fn - don't move captured values out of their body, don't mutate captured values, or capture nothing from their env. can be called more than once without mutating their env
+
+- to use closures properly you have to think about the closure environment, how often it is using the values/variables in that environment, whether or not they are moving out and if you are trying to call them again if they've already moved out. hard! see listing 13-7,8,9
+
+#### Iterators
+- are lazy
+- iterators are a trait, .iter()
+- requires the object to define a next method, returning one item wrapped in Some and when iteration is over returns None
+- iterators requires mutability cause it uses up the iterator. for loops take ownership and makes it mutable behind the scenes. gaaah
+- .iter, .into_iter, .iter_mut
+- methods like next, sum consume the iterator as it goes through it, taking ownership. can't call it after the use it's goooone
+
 
 #### Chapter 19 - advanced features (unsafe rust, traits, types, functions, closures, macros)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -693,22 +752,7 @@ https://blog.thoughtram.io/string-vs-str-in-rust/
 
 - still lingering question: enum arms are exhastive, can you use none as an option
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# terms
+# TERMS TERMS TERMS TERMS TERMS
 
 benefits of rust
 - references make it safe
@@ -785,7 +829,7 @@ benefits of rust
 ## Chapter 6
 - enum: useful if you want to know what kind of data you have and store the data. each variant can have diff types and amountsof associated data vs struct.
 - variant
-- Option<T> -> Some<T> or None is a generic
+- Option<T> -> Some<T> or None is a generic. Some returns T. in chapter 13.1 i think you can be flex about what Some/None returns
 - there is no null, but None exists in option. () is unit type
 - match, arms. matches are exhaustive
 - _ catch0all pattern
@@ -876,6 +920,17 @@ benefits of rust
 - tests go in lib.rs
 
 ## Chapter 13
+- linked lists not next to each other in memory, slow
+- array vs vector
+- array - stack
+- vector - heap, dynamic, growable, more methods. size can change in runtime (so can shrink be less). array always same capacity
+- array vector both contiguous storage in memory
+- https://stackoverflow.com/questions/60583618/performance-of-rust-vector-vect-versus-array-t-n
+- array slice reference to an array
+
+- lazy
+- associated type
+
 
 ## Chapter 19
 
@@ -886,3 +941,75 @@ extra
 - question: structs and enums are data structures not types, and they are hetrogeneous?
 
 - blockchain merkle tree hash tree, linked list
+
+
+#### lambda calculus
+lambda functions
+- map reduce. map in ruby uses lambdas
+- python uses maps and lambdas too
+
+dog = map(lambda x: x * 2, [1,2,3,4])
+print(list(dog))
+
+- nice for readability and shortcuts
+- anonymous functions that are good for security reasons too. you use and dump right away, it can't be inherited
+- lambda functions good for map and reduce type functions where you want to apply the function to a given list, filter. map - where you want to call the same function over and over on something like a list
+- lambda functions safer throwaway functions apply to list and not do anything else with it can't call/reuse function elsewhere in a dangerous way. it's not a function that can be accessed as easily or inherit something bad. 
+enum
+
+- loops are in functions
+- lambdas are good for looping entire functions
+- lambdas - good for calling a function over and over on something. map, filter, reduce
+
+```
+# dog = map(lambda x: x * 2, [1,2,3,4])
+
+def dog(x):
+  return x*2
+
+cat = dog(3)
+
+# cat2 = [1,2,3,4]
+
+# calling the dog function on the list 
+cat3 = map(dog, [1,2,3,4])
+
+# useful here, just one line
+chicken = map(lambda x:x*2, [1,2,3,4])
+```
+
+```
+def dog(x):
+    return x[1]
+# sort by the index value 1 ascending
+  
+a = [(1, 2), (3, 1), (5, 10), (11, -3)]
+a.sort(key=dog) 
+
+print(a[1])
+```
+
+best - https://stackoverflow.com/questions/47407180/do-lambda-expressions-have-any-use-other-than-saving-lines-of-code
+ok explanation - https://www.geeksforgeeks.org/python-lambda-anonymous-functions-filter-map-reduce/
+ok - https://python-course.eu/advanced-python/lambda-filter-reduce-map.php
+good code - https://stackoverflow.com/questions/3259322/why-use-lambda-functions
+ok - https://stackoverflow.com/questions/890128/how-are-lambdas-useful
+
+- something about enums? static/dynamic types?
+- can create values of anonymous types in some programs
+
+not bad video - https://www.youtube.com/watch?v=m32kbFXBRR0&t=148s
+- https://www.steveclarkapps.com/lambda-calculus/
+- http://morphett.info/turing/turing.html
+- https://brilliant.org/wiki/turing-machines/
+
+- all programming all computers are functions
+- functions take something and transforms it. has a transition state
+- all programming is about manipulating variables
+- https://brilliant.org/wiki/lambda-calculus/
+- variable binding and substitution
+- binding means let, new, comes into scope
+- substitition means...something like assignment but implicit apparently
+- assignment (existing variable come in)
+https://cs.stackexchange.com/questions/126587/difference-between-assignment-binding-and-substitution
+- statements vs expressions
