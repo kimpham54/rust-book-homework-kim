@@ -649,9 +649,11 @@ Three types of traits of closures:
 - high level ideas at low level performance, runtime performance not affected, not sure how to explain why. lazy runs only when it needs to, compiles to same code almost, loop code is efficient
 
 #### Chapter 19 - advanced features (unsafe rust, traits, types, functions, closures, macros)
+- unsafe rust
+- good to wrap unsafe code in a safe abstraction
 
-
-
+- a raw pointer is a pointer whose lifetime isn't controlled by an encapsulating object, e.g. can be assigned the address when nothing is there, explicit pointing to an address in memory not smart where it optimizes the place to point to in memory for you
+*const T and *mut T are raw pointers
 
 
 
@@ -837,6 +839,17 @@ https://cs.stackexchange.com/questions/126587/difference-between-assignment-bind
 - avoids null references, all references are always valid
 - buffer overflow/buffer overrun - dangling pointers, memory not deallocated
 - 80% or vast majority wired mag says these issues caused by these languaes. borrow checker. no straight pointers and references. immutable types by default, variables change only if explictly telling it can be mutable. borrow checker checks memory and that you did this properly
+- null pointer dereferencing
+- danging references
+
+
+
+- idempotent insanity albert einstein
+- polymorphism
+- question: structs and enums are data structures not types, and they are hetrogeneous?
+- blockchain merkle tree hash tree, linked list
+
+
 
 # TERMS TERMS TERMS TERMS TERMS 
 ## Chapter 1
@@ -1019,12 +1032,4 @@ https://cs.stackexchange.com/questions/126587/difference-between-assignment-bind
 - unrolling
 
 ## Chapter 19
-
-
-extra
-- buffer overflow
-- idempotent
-- question: structs and enums are data structures not types, and they are hetrogeneous?
-
-- blockchain merkle tree hash tree, linked list
-
+- raw pointers
