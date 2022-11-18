@@ -4,7 +4,9 @@ use std::process;
 use minigrep::Config;
 
 fn main() {
+    // main is now just for error handling and argument collecting
     let args: Vec<String> = env::args().collect();
+
     // create a vector, composed of strings from command line arguments, collect into the vector (need to collect because args is an iterator)
 
     let config = Config::build(&args).unwrap_or_else(|err| {
