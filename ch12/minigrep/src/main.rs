@@ -1,17 +1,26 @@
 use std::env;
-use std::fs;
+use std::process;
+
+use minigrep::Config;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    // println!("{:#?}", args);
-    // dbg!(args);
+    // create a vector, composed of strings from command line arguments, collect into the vector (need to collect because args is an iterator)
 
-    let query = &args[1];
-    let file_path = &args[2];
+    let config = Config::build(&args).unwrap_or_else(|err| {
+        println!("Problem parsing arguments: {err}");
+        process::exit(1);
+    });
+    // create a Config instance, populate it with values from the command line arguments
+    // Err 'not enough arguments' would get passed here in else condition <3
+    // use unwrap or else, unwrap gets the value out of the Ok result, unwraps it and gives it to Config here
 
-    println!("Searching for {}", query);
-    println!("In file {}", file_path);
+    println!("Searching for {}", config.query);
+    println!("In file {}", config.file_path);
 
-    let contents = fs::read_to_string(file_path).expect("Should have been able to read the file");
-    println!("With text:\n{contents}");
+    if let Err(e) = minigrep::run(config) {
+        println!("Application error: {e}");
+        process::exit(1);
+    }
+    // we don't use unwrap here, just if let config::run Error because we don't need unwrapping to get the value from Ok or Error, Ok just returns () in run function
 }
