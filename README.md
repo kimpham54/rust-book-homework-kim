@@ -546,6 +546,7 @@ fn main() {
     println!("p.x = {}", p.x());
 }
 ```
+- a trait is a generic or abstract method
 - declares types after impl using impl<T> flexible to use on diff types
 - traits can have multiple methods. each type that uses the trait must provide its own custom behaviour in the body of the method
 - can gain methods implicitly by defining traits that call other traits
@@ -605,6 +606,7 @@ mod tests {
 
 #### Closures
 - Closures can capture values from their environment in three ways, which directly map to the three ways a function can take a parameter: borrowing immutably, borrowing mutably, and taking ownership. The closure will decide which of these to use based on what the body of the function does with the captured values.
+- from 13.03 The functional programming style prefers to minimize the amount of mutable state to make code clearer. Removing the mutable state might enable a future enhancement to make searching happen in parallel, because we wouldn’t have to manage concurrent access to the results vector.
 
 ```
 def dog(x):
@@ -637,6 +639,7 @@ Three types of traits of closures:
 - to use closures properly you have to think about the closure environment, how often it is using the values/variables in that environment, whether or not they are moving out and if you are trying to call them again if they've already moved out. hard! see listing 13-7,8,9
 
 #### Iterators
+- iterators are a pattern on a vector Vec<T>, with an Iterator trait, associated types are Item and self::Item. methods include next, iter, etc.
 - are lazy (don't do anything unless you consume the iterator using methods like next sum collect)
 - iterators are a trait, .iter()
 - requires the object to define a next method, returning one item wrapped in Some and when iteration is over returns None
@@ -654,7 +657,8 @@ Three types of traits of closures:
 
 - a raw pointer is a pointer whose lifetime isn't controlled by an encapsulating object, e.g. can be assigned the address when nothing is there, explicit pointing to an address in memory not smart where it optimizes the place to point to in memory for you
 *const T and *mut T are raw pointers
-
+- dereference with * meaning 
+- associated type
 
 
 
@@ -1027,9 +1031,12 @@ https://cs.stackexchange.com/questions/126587/difference-between-assignment-bind
 - consuming adaptor - iterator traits that consume, like next and sum, eats it up as it goes through the iterator object and takes ownership
 - iterator adaptor - doesn't consume the iterator, .map creates a new iterator as it goes through
 
+- closures and iterators functional programming. is as fast as lower level (less abstraction) loops
+- less code, simpler, less mutable vars introduced
 - zero cost abstractions (such as iterators, high level abstraction but compiled as if lower level)
 - zero-overhead - In general, C++ implementations obey the zero-overhead principle: What you don’t use, you don’t pay for. And further: What you do use, you couldn’t hand code any better.
-- unrolling
+- unrolling (optimization that removes overhead of the loop controlling code and instead generates repetivie code for each iteration)
+- registers (coefficients in video buffering get stored in there, makes fast)
 
 ## Chapter 19
 - raw pointers
