@@ -22,31 +22,46 @@ impl<'a> Sum<&'a Coin> for u8 {
     {
         let mut results = Vec::new();
 
-        for item in iter {
-            match item {
-                Coin::Penny => 1 as u8,
-                Coin::Nickel => 5 as u8,
-                Coin::Dime => 10 as u8,
+        // if Coin == Coin::Penny, push 25
+
+        for coin in iter {
+            match coin {
+                Coin::Penny => results.push(1),
+                Coin::Nickel => results.push(5),
+                Coin::Dime => results.push(10),
                 Coin::Quarter(state) => {
                     println!("State quarter from {:?}!", state);
-                    25 as u8
+                    results.push(25);
                 }
-            };
-
-            results.push(item);
-            println!(
-                "Results of Sum Trait for an Iterator of Coins {:?}",
-                results
-            );
+            }
         }
-        8 //return a u8 value for now so that .sum works
-          //use this once i've converted the coins to u8s
-          // results.fold(
-          //             0,
-          //             // #[rustc_inherit_overflow_checks]
-          //             |a, b| a + b,
-          //         );
+
+        // for item in iter {
+        //     match item {
+        //         Coin::Penny => 1 as u8,
+        //         Coin::Nickel => 5,
+        //         Coin::Dime => 10,
+        //         Coin::Quarter(state) => {
+        //             println!("State quarter from {:?}!", state);
+        //             25
+        //         }
+        //     };
+
+        // results.push(item);
+        println!(
+            "Results of Sum Trait for an Iterator of Coins {:?}",
+            results
+        );
+
+        let sum: u8 = results.iter().fold(
+            0,
+            // #[rustc_inherit_overflow_checks]
+            |a, b| a + b,
+        );
+        sum
     }
+    //return a u8 value for now so that .sum works
+    //use this once i've converted the coins to u8s
 }
 
 fn value_in_cents(coin: Coin) -> u8 {
@@ -79,7 +94,13 @@ fn main() {
     let looplist: u8 = list.iter().sum();
     println!("for loop traditional way sum is {:?}", looplist);
 
-    let morechange = vec![Coin::Penny, Coin::Penny, Coin::Penny, Coin::Dime];
+    let morechange = vec![
+        Coin::Penny,
+        Coin::Penny,
+        Coin::Penny,
+        Coin::Penny,
+        Coin::Dime,
+    ];
     let sum: u8 = morechange.iter().sum();
     println!("the final balance using the sum trait is {}", sum);
 
