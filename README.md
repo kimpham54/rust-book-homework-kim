@@ -657,7 +657,19 @@ Three types of traits of closures:
 
 - a raw pointer is a pointer whose lifetime isn't controlled by an encapsulating object, e.g. can be assigned the address when nothing is there, explicit pointing to an address in memory not smart where it optimizes the place to point to in memory for you
 *const T and *mut T are raw pointers
-- dereference with * meaning 
+- dereference with * meaning the following:
+```
+ let mut x = 100;
+    let y = &mut x;
+    *y += 100;
+    // dereference means y gets the value of x and is no longer a reference
+    // dereference means that you gave it back to x?
+    let z = &mut x;
+    *z += 1000;
+    assert_eq!(x, 1200);
+    ```
+it's confusing and i keep getting confused. see https://www.koderhq.com/tutorial/rust/smart-pointer/#:~:text=The%20dereference%20operator%20is%20also,behaviour%20of%20the%20dereferencing%20operator. for another comparison example under Deref<T> https://doc.rust-lang.org/std/ops/trait.Deref.html. my own confused experiments https://replit.com/@kimpham54/MintcreamDismalQuote#src/main.rs
+
 - associated type
 
 
@@ -1040,3 +1052,4 @@ https://cs.stackexchange.com/questions/126587/difference-between-assignment-bind
 
 ## Chapter 19
 - raw pointers
+- print pointers, printf!("{}", ptr as usize) or println!("{:p}", &x);
