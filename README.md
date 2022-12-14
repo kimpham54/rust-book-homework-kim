@@ -672,10 +672,16 @@ it's confusing and i keep getting confused. see https://www.koderhq.com/tutorial
 
 - associated type
 
+#### Chapter 14
+- documentation is ///, comments are //
+- not much to say here, see terms list
 
-
-
-
+#### Chapter 15
+- smart pointers are like pointers, a variable that contains an address in memory but has extra metadata and capaibilities. also a C++ concept
+- implemented with structs. also have Deref and Drop traits
+- String, Vec<T>, Box<T> are pointers
+- Box<T> for allocating values on the heap
+- box is useful for recursion, rust needs to know how much  space a type takes up so with box instead of using a diff type for recursion the pointer points to another location recursively: "Conceptually, we still have a list, created with lists holding other lists, but this implementation is now more like placing the items next to one another rather than inside one another."
 
 
 
@@ -1053,3 +1059,32 @@ https://cs.stackexchange.com/questions/126587/difference-between-assignment-bind
 ## Chapter 19
 - raw pointers
 - print pointers, printf!("{}", ptr as usize) or println!("{:p}", &x);
+
+## Chapter 14
+- binary
+- workspace - multiple packages
+- package - a crate - can have many modules
+- module
+- binary target - crate to run on its own. has main.rs
+- library target - meant to use with other programs 
+
+## Chapter 15
+- Box<T> is a smart pointer, a tuple sturuct with one element
+- smart pointer
+- recursive type
+- cons list
+
+- reference counting
+- interior mutability
+- reference cycles
+
+- dereference *y is actually *(y.deref()) behind the scenes
+- deref coercion - where you don't have to explicitly use & or *. but it will assume that's what you're using and compile and have it work. so String::new can be called where &str or &String is desired etc. this tripped me up in other macros/functions where it does this
+- destructor
+- constructor
+- double free
+- Rc<T>
+- RefCell<T> and interior mutability
+- reference cycle
+- weak reference
+- memory leak
